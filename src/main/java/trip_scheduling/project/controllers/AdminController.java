@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import trip_scheduling.project.entities.Station;
 import trip_scheduling.project.services.StationService;
+import trip_scheduling.project.entities.Trip;
+import trip_scheduling.project.services.TripService;
+
 
 import java.util.List;
 
@@ -19,13 +21,36 @@ import java.util.List;
 @RequestMapping(path = "api/tripScheduling")
 public class AdminController {
 	@Autowired
+	private final TripService tripService;
 	private final StationService stationService;
 
-	public AdminController(StationService stations) {
+	public AdminController(StationService stations,TripService tripS) {
+  this.tripService = tripS;
 		this.stationService = stations;
 	}
 
-	@PostMapping("/stationA")
+	@PostMapping("/tripA")
+	public void addTrip(@RequestBody Trip trip) {
+		tripService.addNewTrip(trip);
+	}
+
+	@GetMapping("/tripG")
+	public List<Trip> getTrips() {
+		return tripService.getTrips();
+
+	}
+
+	@PutMapping("/tripU/{tripId}")
+	public void updateTrip(@PathVariable("tripId") Long trip_id,@RequestBody Trip trip) {
+		tripService.updateTrip(trip_id,trip);
+	}
+	
+
+	@DeleteMapping("/tripD/{tripId}")
+	public void deleteTrip(@PathVariable("tripId") Long trip_id) {
+		tripService.deleteTrip(trip_id);
+    
+    @PostMapping("/stationA")
 	public void addTrip(@RequestBody Station station) {
 		stationService.addNewStation(station);
 	}
@@ -45,6 +70,7 @@ public class AdminController {
 	@DeleteMapping("/stationD/{stationId}")
 	public void deleteTrip(@PathVariable("stationId") Long station_id) {
 		stationService.deleteStation(station_id);
+
 	}
 
 }
