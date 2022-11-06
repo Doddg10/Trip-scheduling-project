@@ -23,10 +23,12 @@ public class AdminController {
 	@Autowired
 	private final TripService tripService;
 	private final StationService stationService;
+        private final AdminService adminService;
 
-	public AdminController(StationService stations,TripService tripS) {
-  this.tripService = tripS;
+	public AdminController(StationService stations,TripService tripS,AdminService adminS) {
+                this.tripService = tripS;
 		this.stationService = stations;
+                this.adminService = adminS;
 	}
 
 	@PostMapping("/tripA")
@@ -72,5 +74,15 @@ public class AdminController {
 		stationService.deleteStation(station_id);
 
 	}
+        @PostMapping("/signUp")
+	public void addAdmin(@RequestBody Admin admin) {
+		adminService.addNewAdmin(admin);
+	}
+
+	@PostMapping("/signIn")
+	public String SignInAdmin(@RequestBody Admin admin) {
+		return adminService.SignInAdmin(admin);
+	}
+
 
 }
