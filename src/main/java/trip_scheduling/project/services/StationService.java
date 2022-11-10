@@ -10,47 +10,48 @@ import java.util.List;
 
 @Service
 public class StationService {
-	private final StationRepository stationRepository;
+	private final StationRepository stationR;
 
 	@Autowired
-	public StationService(StationRepository stationRepository) {
-		this.stationRepository = stationRepository;
+	public StationService(StationRepository stationR) {
+		this.stationR = stationR;
 	}
 
-	public List<Station> getStations() {
-		return stationRepository.findAll();
-
+	public String addStation(Station st) {
+		stationR.save(st);
+      return "Station Added Successfuly!";
 	}
 
-	public void addNewStation(Station station) {
-		stationRepository.save(station);
-
-	}
-
-	public void deleteStation(Long id) {
-		boolean yes = stationRepository.existsById(id);
-		if (!yes) {
-			throw new IllegalStateException("Station with id " + id + " does not exist");
-		}
-		stationRepository.deleteById(id);
+	public List<Station> listAllStations() {
+		return stationR.findAll();
 
 	}
 
-	public void  updateStation(Long station_id,Station station) {          
-		boolean yes = stationRepository.existsById(station_id);
+	public String stationUpdate(Long station_id, Station st) {
+		boolean yes = stationR.existsById(station_id);
 		if (!yes) {
 			throw new IllegalStateException("Station with id " + station_id + " does not exist");
 		}
-		for(int i=0;i<stationRepository.findAll().size();i++) {
-			if	(stationRepository.findAll().get(i).getId().equals(station_id)) {
-				Station updateStation=stationRepository.findAll().get(i);
-				updateStation.setName(station.getName());				
-				stationRepository.save(updateStation);
+		for (int i = 0; i < stationR.findAll().size(); i++) {
+			if (stationR.findAll().get(i).getIdStation().equals(station_id)) {
+				Station updateStation = stationR.findAll().get(i);
+				updateStation.setName(st.getName());
+				stationR.save(updateStation);
 			}
 
-		
 		}
-			
-		
+		return "Station specified has been updated.";
 	}
+
+	public String stationDelete(Long id_station) {
+		boolean yes = stationR.existsById(id_station);
+		if (!yes) {
+			
+			throw new IllegalStateException("Station with id " + id_station + " does not exist or has already been deleted");
+		}
+		stationR.deleteById(id_station);
+		return "Station specified has been deleted.";
+
+	}
+
 }
