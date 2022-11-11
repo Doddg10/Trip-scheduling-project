@@ -7,9 +7,7 @@ import javax.persistence.*;
 public class Admin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
 	private Long id_admin;
-
 	private String email;
 	private String password;
 	
@@ -39,7 +37,6 @@ public class Admin {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public Long getIdAdmin() {
 		return id_admin;
 	}
@@ -49,15 +46,6 @@ public class Admin {
 	}
 
 	
-
-
-	@Override
-	public String toString() {
-		return "Admin [email=" + email + ", password=" + password + ", getEmail()=" + getEmail() + ", getPassword()="
-				+ getPassword() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
-				+ super.toString() + "]";
-	}
-
 	
 	
 
