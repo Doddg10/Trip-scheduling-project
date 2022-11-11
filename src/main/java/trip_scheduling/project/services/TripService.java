@@ -10,50 +10,48 @@ import java.util.List;
 
 @Service
 public class TripService {
-	private final TripRepository tripRepository;
+	private final TripRepository tripR;
 
 	@Autowired
 	public TripService(TripRepository tripRepository) {
-		this.tripRepository = tripRepository;
+		this.tripR = tripRepository;
 	}
 
-	public List<Trip> getTrips() {
-		return tripRepository.findAll();
+	public String makeTrip(Trip tr) {
+		tripR.save(tr);
+		return "Trip created successfuly!";
+	}
+
+	public List<Trip> listAllTrips() {
+		return tripR.findAll();
 
 	}
 
-	public void addNewTrip(Trip trip) {
-		tripRepository.save(trip);
-
-	}
-
-	public void deleteTrip(Long id) {
-		boolean yes = tripRepository.existsById(id);
+	public String tripUpdate(Long id_trip, Trip tr) {
+		boolean yes = tripR.existsById(id_trip);
 		if (!yes) {
-			throw new IllegalStateException("Trip with id " + id + " does not exist");
+			throw new IllegalStateException("Trip with id " + id_trip + " does not exist");
 		}
-		tripRepository.deleteById(id);
-
-	}
-
-	public void  updateTrip(Long trip_id,Trip trip) {          
-		boolean yes = tripRepository.existsById(trip_id);
-		if (!yes) {
-			throw new IllegalStateException("Trip with id " + trip_id + " does not exist");
-		}
-		for(int i=0;i<tripRepository.findAll().size();i++) {
-			if	(tripRepository.findAll().get(i).getId().equals(trip_id)) {
-				Trip updateTrip=tripRepository.findAll().get(i);
-				updateTrip.setStart_time(trip.getStart_time());
-				updateTrip.setEnd_time(trip.getEnd_time());
-				updateTrip.setFrom_station(trip.getFrom_station());
-				updateTrip.setTo_station(trip.getTo_station());
-				 tripRepository.save(updateTrip);
+		for (int i = 0; i < tripR.findAll().size(); i++) {
+			if (tripR.findAll().get(i).getIdTrip().equals(id_trip)) {
+				Trip updateTrip = tripR.findAll().get(i);
+				updateTrip.setStartTime(tr.getStartTime());
+				updateTrip.setEndTime(tr.getEndTime());
+				updateTrip.setFromStation(tr.getFromStation());
+				updateTrip.setToStation(tr.getToStation());
+				tripR.save(updateTrip);
 			}
 
-		
 		}
-			
-		
+		return "Trip Specified has been updated.";
+	}
+
+	public String tripDelete(Long id_trip) {
+		boolean yes = tripR.existsById(id_trip);
+		if (!yes) {
+			throw new IllegalStateException("Trip with id " + id_trip + " does not exist or already has been deleted");
+		}
+		tripR.deleteById(id_trip);
+		return "Trip specified has been deleted.";
 	}
 }
