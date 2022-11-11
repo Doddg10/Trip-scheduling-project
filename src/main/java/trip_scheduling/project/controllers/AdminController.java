@@ -1,6 +1,10 @@
 package trip_scheduling.project.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,80 +13,87 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import trip_scheduling.project.entities.Admin;
+import trip_scheduling.project.repositories.AdminRepository;
+import trip_scheduling.project.services.AdminService;
 import trip_scheduling.project.entities.Station;
 import trip_scheduling.project.services.StationService;
 import trip_scheduling.project.entities.Trip;
 import trip_scheduling.project.services.TripService;
 
-
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "api/tripScheduling")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 	@Autowired
-	private final TripService tripService;
-	private final StationService stationService;
-        private final AdminService adminService;
-
-	public AdminController(StationService stations,TripService tripS,AdminService adminS) {
-                this.tripService = tripS;
-		this.stationService = stations;
-                this.adminService = adminS;
-	}
-
-	@PostMapping("/tripA")
-	public void addTrip(@RequestBody Trip trip) {
-		tripService.addNewTrip(trip);
-	}
-
-	@GetMapping("/tripG")
-	public List<Trip> getTrips() {
-		return tripService.getTrips();
-
-	}
-
-	@PutMapping("/tripU/{tripId}")
-	public void updateTrip(@PathVariable("tripId") Long trip_id,@RequestBody Trip trip) {
-		tripService.updateTrip(trip_id,trip);
-	}
 	
 
-	@DeleteMapping("/tripD/{tripId}")
-	public void deleteTrip(@PathVariable("tripId") Long trip_id) {
-		tripService.deleteTrip(trip_id);
-    
-    @PostMapping("/stationA")
-	public void addTrip(@RequestBody Station station) {
-		stationService.addNewStation(station);
+	private final TripService tripS;
+	private final StationService stationS;
+	private final AdminService adminS;
+
+	public AdminController(StationService StationS, TripService tripS, AdminService adminS) {
+		this.tripS = tripS;
+		this.stationS = StationS;
+		this.adminS = adminS;
+
+
 	}
 
-	@GetMapping("/stationG")
-	public List<Station> getStations() {
-		return stationService.getStations();
+	@PostMapping("/signUp")
+	
+	public void addAdmin(@RequestBody Admin ad) {
+		adminS.addAdmin(ad);
+	}
+
+	@PostMapping("/signIn")
+	public ResponseEntity<Admin> adminSignInCheck(@RequestBody Admin ad) {
+		return adminS.adminSignInCheck(ad);
+	}
+	@PostMapping("/stationC")
+	public String addStation(@RequestBody Station station) {
+		return stationS.addStation(station);
+	}
+
+	@GetMapping("/stationR")
+	public List<Station> listAllStations() {
+		return stationS.listAllStations();
 
 	}
 
 	@PutMapping("/stationU/{stationId}")
-	public void updateStation(@PathVariable("stationId") Long station_id,@RequestBody Station station) {
-		stationService.updateStation(station_id,station);
+	public String stationUpdate(@PathVariable("stationId") Long station_id, @RequestBody Station st) {
+		return stationS.stationUpdate(station_id, st);
 	}
-	
 
 	@DeleteMapping("/stationD/{stationId}")
-	public void deleteTrip(@PathVariable("stationId") Long station_id) {
-		stationService.deleteStation(station_id);
+	public String stationDelete(@PathVariable("stationId") Long station_id) {
+		return stationS.stationDelete(station_id);
 
 	}
-        @PostMapping("/signUp")
-	public void addAdmin(@RequestBody Admin admin) {
-		adminService.addNewAdmin(admin);
+
+	@PostMapping("/tripC")
+	public String makeTrip(@RequestBody Trip tr) {
+		return tripS.makeTrip(tr);
 	}
 
-	@PostMapping("/signIn")
-	public String SignInAdmin(@RequestBody Admin admin) {
-		return adminService.SignInAdmin(admin);
+	@GetMapping("/tripR")
+	public List<Trip> listAllTrips() {
+		return tripS.listAllTrips();
+
 	}
+
+	@PutMapping("/tripU/{tripId}")
+	public String tripUpdate(@PathVariable("tripId") Long id_trip, @RequestBody Trip tr) {
+		return tripS.tripUpdate(id_trip, tr);
+	}
+
+	@DeleteMapping("/tripD/{tripId}")
+	public String tripDelete(@PathVariable("tripId") Long id_trip) {
+		return tripS.tripDelete(id_trip);
+	}
+     
 
 
 }

@@ -6,23 +6,23 @@ import javax.persistence.*;
 public class Station {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id_station;
 	private String name;
 	
 	public Station() {
 		
 	}
-	public Station(Long id, String name) {
-		this.id = id;
+	public Station(Long id_station, String name) {
+		this.id_station = id_station;
 		this.name = name;
 	}
 	
 	
-	public Long getId() {
-		return id;
+	public Long getIdStation() {
+		return id_station;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdStation(Long id_station) {
+		this.id_station = id_station;
 	}
 	public String getName() {
 		return name;

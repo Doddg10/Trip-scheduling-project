@@ -3,6 +3,8 @@ package trip_scheduling.project.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
 import trip_scheduling.project.entities.Admin;
 import org.springframework.stereotype.Service;
 
@@ -11,31 +13,33 @@ import trip_scheduling.project.repositories.AdminRepository;
 
 @Service
 public class AdminService {
-	private final AdminRepository adminRepository;
+	private final AdminRepository adminR;
 	private String email;
 	private String password;
 
 	@Autowired
-	public AdminService(AdminRepository adminRepository) {
-		this.adminRepository = adminRepository;
+	public AdminService(AdminRepository adminR) {
+		this.adminR = adminR;
 	}
 
-	public void addNewAdmin(Admin admin) {
-		java.util.Optional<Admin> adminOptional = adminRepository.findAdminByEmail(admin.getEmail());
+	public void addAdmin(Admin ad) {
+		java.util.Optional<Admin> adminOptional = adminR.findAdminByEmail(ad.getEmail());
 		if (adminOptional.isPresent()) {
 			throw new IllegalStateException("Email taken");
 
 		}
 
-		adminRepository.save(admin);
+		adminR.save(ad);
 
 	}
 
-	public String SignInAdmin(Admin admin) {
+	
+
+	public ResponseEntity<Admin> adminSignInCheck(Admin ad) {
 		boolean flag = false;
-		for (int i = 0; i < adminRepository.findAll().size(); i++) {
-			if (adminRepository.findAll().get(i).getEmail().equals(admin.getEmail())
-					&& adminRepository.findAll().get(i).getPassword().equals(admin.getPassword())) {
+		for (int i = 0; i < adminR.findAll().size(); i++) {
+			if (adminR.findAll().get(i).getEmail().equals(ad.getEmail())
+					&& adminR.findAll().get(i).getPassword().equals(ad.getPassword())) {
 
 				flag = true;
 
@@ -44,10 +48,15 @@ public class AdminService {
 		}
 
 		if (flag == true)
-			return "login successfull.";
+			//return "login successfull.";
+			return ResponseEntity.ok(ad);
 		else
-			return "login failed";
+			return (ResponseEntity<Admin>) ResponseEntity.internalServerError();
 
 	}
+
+	
+
+
 
 }
