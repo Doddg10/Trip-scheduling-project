@@ -7,6 +7,7 @@ import trip_scheduling.project.entities.Trip;
 import trip_scheduling.project.repositories.TripRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TripService {
@@ -53,5 +54,10 @@ public class TripService {
 		}
 		tripR.deleteById(id_trip);
 		return "Trip specified has been deleted.";
+	}
+
+	public Optional<Trip> getTrip(Long id_trip) {
+		Optional<Trip> tr=tripR.findById(id_trip);
+		return tr;
 	}
 }

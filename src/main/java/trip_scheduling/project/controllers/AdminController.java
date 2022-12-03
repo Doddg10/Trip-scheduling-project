@@ -22,11 +22,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/tripScheduling")
+
 @CrossOrigin(origins = "http://${FRONTEND_HOST:localhost}:${FRONTEND_PORT:4200}")
+
+
+
 
 public class AdminController {
 	@Autowired
-
 	private final TripService tripS;
 	private final StationService stationS;
 	private final AdminService adminS;
@@ -35,8 +38,6 @@ public class AdminController {
 		this.tripS = tripS;
 		this.stationS = StationS;
 		this.adminS = adminS;
-
-
 	}
 
 	@PostMapping("/signUp")
@@ -104,15 +105,5 @@ public class AdminController {
 	public String tripDelete(@PathVariable("tripId") Long id_trip) {
 		return tripS.tripDelete(id_trip);
 	}
-        @PostMapping("/signUp")
-	public void addAdmin(@RequestBody Admin admin) {
-		adminService.addNewAdmin(admin);
-	}
-
-	@PostMapping("/signIn")
-	public String SignInAdmin(@RequestBody Admin admin) {
-		return adminService.SignInAdmin(admin);
-	}
-
 
 }
