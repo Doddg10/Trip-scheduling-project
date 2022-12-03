@@ -22,7 +22,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/tripScheduling")
-@CrossOrigin(origins = "http://localhost:4200")
+
+@CrossOrigin(origins = "http://${FRONTEND_HOST:localhost}:${FRONTEND_PORT:4200}")
+
+
+
 
 public class AdminController {
 	@Autowired
