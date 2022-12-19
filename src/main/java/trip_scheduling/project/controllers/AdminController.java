@@ -22,7 +22,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/tripScheduling")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 
 public class AdminController {
 	@Autowired
